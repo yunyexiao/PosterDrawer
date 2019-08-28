@@ -8,7 +8,7 @@ void setup() {
 void draw() {
   bgMaker.drawBackground();
  //picture loading 
-  PImage img = loadImage("/home/cirno/download/pikachu.jpg");
+  PImage img = loadImage("pikachu.jpg");
   image(img, 250, 450, 200, 200);
   //use class from another file named SimpleTextMaker.pde.
   SimpleTextMaker textMaker = new SimpleTextMaker();
