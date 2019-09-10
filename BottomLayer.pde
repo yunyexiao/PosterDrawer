@@ -5,7 +5,6 @@ public class BottomLayer {
   private int h;
 
   public BottomLayer(color c, float bottomRatio) {
-    // The process of drawing bottom layer.
     this.c = c;
     w = width;
     h = (int) (height * bottomRatio);
@@ -14,6 +13,7 @@ public class BottomLayer {
   }
   
   public void render() {
+    // The process of drawing bottom layer.
     fill(c);
     noStroke();
     rect(x, y, w, h);

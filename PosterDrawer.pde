@@ -3,7 +3,7 @@ int numCell = 6;
 int cellWidth, cellHeight;
 
 // Background image path.
-String imagePath = "wash.jpg";
+String imagePath = "ball.jpg";
 // The background image.
 ImageBackground imageBg;
 
@@ -30,7 +30,7 @@ TextUtils textUtils = new TextUtils();
 ThemeColorDetector textColorHelper = new ThemeColorDetector(1);
 // Text background color threshold.
 int textBgColorThreshold = 120;
-String fontName = "";
+String fontName = "msyhbd";
 
 
 void setup() {
@@ -59,38 +59,58 @@ void draw() {
   
   // slogan column text
   int[] scBounds = {cellWidth / 2, height / 2, cellWidth, (int) (1.5 * cellHeight)};
-  textUtils.addColumnText("竖版标语文字", scBounds, 24, textColor(scBounds), fontName);
+  textUtils.addColumnText("竖版标语文字", scBounds, 24, textColorByRGB(scBounds), fontName);
   // slogan line text 
   int[] slBounds = {cellWidth * 3 / 2, cellHeight * 3 / 2, width / 2, height / 2};
-  textUtils.addLineText("标语文字横版", slBounds, 24, textColor(slBounds), fontName);
+  textUtils.addLineText("标语文字横版", slBounds, 24, textColorByRGB(slBounds), fontName);
+  
+  color bottomTextColor = textColorByHSB();
   // bottom column text
   int[] bcBounds = {94, height - bottom.getHeight(), width / 2 - 94, bottom.getHeight()};
-  textUtils.addColumnText("竖版底部文字", bcBounds, 20, textColor(bcBounds), fontName);
+  textUtils.addColumnText("竖版底部文字", bcBounds, 20, bottomTextColor, fontName);
   // bottom left text
   int[] blBounds = {0, height - bottom.getHeight(), 94, bottom.getHeight()};
-  textUtils.addLineText("底部左文字", blBounds, 18, textColor(blBounds), fontName);
+  textUtils.addLineText("底部左文字", blBounds, 18, bottomTextColor, fontName);
   // bottom right text
   int[] brBounds = {width / 2, height - bottom.getHeight(), width / 2, bottom.getHeight()};
-  textUtils.addLineText("底部右文字", brBounds, 18, textColor(brBounds), fontName);
+  textUtils.addLineText("底部右文字", brBounds, 18, bottomTextColor, fontName);
   // top left text
   int[] tlBounds = {51, 30, 113, 38};
-  textUtils.addLineText("上部左文字", tlBounds, 20, textColor(tlBounds), fontName);
+  textUtils.addLineText("上部左文字", tlBounds, 20, textColorByRGB(tlBounds), fontName);
   
   delay(500);
 }
 
-color textColor(int[] bounds) {
+color textColorByRGB(int[] bounds) {
   color mainColor = textColorHelper.detect(get(bounds[0], bounds[1], bounds[2], bounds[3]))[0];
   int red = (int)red(mainColor);
   int green = (int)green(mainColor);
   int blue = (int)blue(mainColor);
-  if ( red > textBgColorThreshold || green > textBgColorThreshold || blue > textBgColorThreshold) {
+  if (red > textBgColorThreshold || green > textBgColorThreshold || blue > textBgColorThreshold) {
     return color(0, 0, 0);
   } else {
     return color(255, 255, 255);
   }
 }
 
+color textColorByHSB() {
+  color mainColor = topKColors[0];
+  int h = (int) hue(mainColor);
+  int s = (int) saturation(mainColor);
+  int b = (int) brightness(mainColor);
+  if(b > 60) {
+    b *= (1 - 0.6);
+  } else {
+    b *= (1 + 0.6);
+  }
+  colorMode(HSB);
+  color c = color(h, s, b);
+  colorMode(RGB);
+  return c;
+}
+
+// This function is not used anywhere.
+// Just ignore it.
 void testColorDetector() {
   PImage img = loadImage("tea.jpeg");
   ThemeColorDetector d = new ThemeColorDetector(topK);

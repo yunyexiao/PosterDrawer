@@ -4,7 +4,6 @@ public class Logo {
   private int w, h;
 
   public Logo(String filePath, int h, int[] centerPoint) {
-    // The process of drawing logo.
     PImage img = loadImage(filePath);
     logoImg = img;
     x = centerPoint[0];
@@ -14,6 +13,7 @@ public class Logo {
   }
   
   public void render() {
+    // The process of drawing logo.
     imageMode(CENTER);
     image(logoImg, x, y, w, h);
   }

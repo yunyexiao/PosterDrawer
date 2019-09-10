@@ -7,7 +7,7 @@ public class TextUtils {
    * @param size The text size.
    * @param fillColor The text color. It should contain 3 or 4 integers representing RGB and opacity (optional) values separately.
    * @param font The text font.
-   * @param line Wether the text are in lines or columns.
+   * @param line Whether the text is in lines or columns.
    */
   public void addText(String text, int[] bounds, int size, color fillColor, String font, boolean line) {
     //textSize(size);
@@ -17,6 +17,7 @@ public class TextUtils {
     if (line) {
       text(text, x, y, w, h);
     } else {
+      // Rearrange the text into columns. 
       int colCharCount = h / size;
       int colCount = (text.length() - 1) / colCharCount + 1;
       for (int i = 0; i < colCount; ++i) {
