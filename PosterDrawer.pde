@@ -3,12 +3,12 @@ int numCell = 6;
 int cellWidth, cellHeight;
 
 // Background image path.
-String imagePath = "ball.jpg";
+String imagePath = "food3.jpg";
 // The background image.
 ImageBackground imageBg;
 
 // The number of colors to extract from the image.
-int topK = 5;
+int topK = 10;
 // Top k colors.
 color[] topKColors;
 
@@ -16,7 +16,7 @@ color[] topKColors;
 Logo logo;
 String logoPath = "logo.jpeg";
 int logoHeight = 38; // 10mm ~= 38px
-int[] logoCenter = {283, 30};
+int[] logoCenter = {308, 38};
 
 // Bottom layer.
 BottomLayer bottom;
@@ -30,7 +30,6 @@ TextUtils textUtils = new TextUtils();
 ThemeColorDetector textColorHelper = new ThemeColorDetector(1);
 // Text background color threshold.
 int textBgColorThreshold = 120;
-String fontName = "msyhbd";
 
 
 void setup() {
@@ -58,47 +57,84 @@ void draw() {
   bottom.render();
   
   // slogan column text
-  int[] scBounds = {cellWidth / 2, height / 2, cellWidth, (int) (1.5 * cellHeight)};
-  textUtils.addColumnText("竖版标语文字", scBounds, 24, textColorByRGB(scBounds), fontName);
+  int[] scBounds = {283, 75, cellWidth, (int) (1.8 * cellHeight)};
+  textUtils.addColumnText("  巧克力的丝滑，与浓浓的草莓相结合", scBounds, 18, textColorByBrightness(scBounds), "Microsoft Yahei UI");
   // slogan line text 
-  int[] slBounds = {cellWidth * 3 / 2, cellHeight * 3 / 2, width / 2, height / 2};
-  textUtils.addLineText("标语文字横版", slBounds, 24, textColorByRGB(slBounds), fontName);
+  int[] slBounds = {19, 380, 75, 75};
+  textUtils.addLineText("千年文化传承，千年坎坷磨琢，中华美食，色香味美。", slBounds, 12, textColorByBrightness(slBounds), "FZChaoCuHei-M10");
   
-  color bottomTextColor = textColorByHSB();
   // bottom column text
-  int[] bcBounds = {94, height - bottom.getHeight(), width / 2 - 94, bottom.getHeight()};
-  textUtils.addColumnText("竖版底部文字", bcBounds, 20, bottomTextColor, fontName);
+  int[] bcBounds = {132, 472, 75, 140};
+  color bcColor = textColorByBrightness(bottom.getColor(), topKColors[0], 60, 0.5);
+  textUtils.addColumnText(" 古道西风瘦马小桥流水人家", bcBounds, 16, bcColor, "FZChaoCuHei-M10");
+  stroke(bcColor);
+  strokeWeight(1);
+  line(123, 472, 123, 590);
+  stroke(bcColor);
+  strokeWeight(1);
+  line(170, 472, 170, 590);
   // bottom left text
-  int[] blBounds = {0, height - bottom.getHeight(), 94, bottom.getHeight()};
-  textUtils.addLineText("底部左文字", blBounds, 18, bottomTextColor, fontName);
+  color bottomTextColor = textColorByBrightness(bottom.getColor(), topKColors[0], 60, 0.3);
+  int[] bltBounds = {19, 472, 95, 49};
+  textUtils.addLineText("千年文化传承，千年坎坷磨琢，中华美食，色香味美。", bltBounds, 10, bottomTextColor, "Microsoft Yahei UI");
+  stroke(bottomTextColor);
+  strokeWeight(1);
+  line(19, 529, 113, 529);
+  int[] blbBounds = {19, 540, 95, 49};
+  textUtils.addLineText("风吹柳花满店香，吴姬压酒劝客尝！", blbBounds, 10, bottomTextColor, "Microsoft Yahei UI");
   // bottom right text
-  int[] brBounds = {width / 2, height - bottom.getHeight(), width / 2, bottom.getHeight()};
-  textUtils.addLineText("底部右文字", brBounds, 18, bottomTextColor, fontName);
+  stroke(bottomTextColor);
+  strokeWeight(1);
+  line(189, 535, 321, 535);
+  int[] brtBounds = {189, 472, 132, 60};
+  textUtils.addLineText("某街是合肥市与包河区两级政府合力打造的安徽省最大、最有特色的美食街区。整个街区分为室内特色餐饮集中区和室外开发式名小吃档口区。合肥某街特征集美食街区宣传标语，要求作品主题突出、寓意深刻，能体现某街作为美食街区的性质；作品简单易记，具有鲜明特色。", brtBounds, 10, bottomTextColor, "Microsoft Yahei UI");
+  int[] brbBounds = {189, 540, 132, 38};
+  textUtils.addLineText("封入罐中的是新鲜与健康。\n              --大陆罐幢食品公司", brbBounds, 10, bottomTextColor, "Microsoft Yahei UI");
+  
   // top left text
-  int[] tlBounds = {51, 30, 113, 38};
-  textUtils.addLineText("上部左文字", tlBounds, 20, textColorByRGB(tlBounds), fontName);
+  int[] tlBounds = {19, 19, 246, 50};
+  textUtils.addLineText("I love life more than truth. Dessert is my favorite.", tlBounds, 18, textColorByBrightness(tlBounds), "Monotype Corsiva");
   
   delay(500);
 }
 
-color textColorByRGB(int[] bounds) {
+color textColorByBrightness(int[] bounds) {
   color mainColor = textColorHelper.detect(get(bounds[0], bounds[1], bounds[2], bounds[3]))[0];
-  int red = (int)red(mainColor);
-  int green = (int)green(mainColor);
-  int blue = (int)blue(mainColor);
-  if (red > textBgColorThreshold || green > textBgColorThreshold || blue > textBgColorThreshold) {
+  colorMode(HSB);
+  int brightness = (int) brightness(mainColor);
+  colorMode(RGB);
+  if (brightness > 60) {
     return color(0, 0, 0);
   } else {
     return color(255, 255, 255);
   }
 }
 
-color textColorByHSB() {
-  color mainColor = topKColors[0];
+color textColorByBrightness(color mainColor) {
+  return textColorByBrightness(mainColor, 60);
+}
+
+color textColorByBrightness(color backColor, color mainColor, int threshold, float ratio) {
+  int backB = (int) brightness(backColor);
   int h = (int) hue(mainColor);
   int s = (int) saturation(mainColor);
   int b = (int) brightness(mainColor);
-  if(b > 60) {
+  if(backB > threshold) {
+    b *= (1 - ratio);
+  } else {
+    b *= (1 + ratio);
+  }
+  colorMode(HSB);
+  color c = color(h, s, b);
+  colorMode(RGB);
+  return c;
+}
+
+color textColorByBrightness(color mainColor, int threshold) {
+  int h = (int) hue(mainColor);
+  int s = (int) saturation(mainColor);
+  int b = (int) brightness(mainColor);
+  if(b > threshold) {
     b *= (1 - 0.6);
   } else {
     b *= (1 + 0.6);

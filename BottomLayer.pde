@@ -5,7 +5,13 @@ public class BottomLayer {
   private int h;
 
   public BottomLayer(color c, float bottomRatio) {
-    this.c = c;
+    int hValue = (int) hue(c);
+    int s = (int) saturation(c);
+    int b = (int) (brightness(c));
+    colorMode(HSB);
+    this.c = color(hValue, s, b);
+    colorMode(RGB);
+    //this.c = c;
     w = width;
     h = (int) (height * bottomRatio);
     x = 0;

@@ -15,15 +15,16 @@ public class TextUtils {
     textFont(createFont(font, size));
     int x = bounds[0], y = bounds[1], w = bounds[2], h = bounds[3];
     if (line) {
+      textLeading(size * 1.5);
       text(text, x, y, w, h);
     } else {
       // Rearrange the text into columns. 
-      int colCharCount = h / size;
+      int colCharCount = h / size - 1;
       int colCount = (text.length() - 1) / colCharCount + 1;
       for (int i = 0; i < colCount; ++i) {
         int maxIndex = min((i + 1) * colCharCount, text.length());
         String colText = text.substring(i * colCharCount, maxIndex);
-        textLeading(size);
+        textLeading(size + 1);
         text(colText, x + i * size, y, size + 1, h);
       }
     }
